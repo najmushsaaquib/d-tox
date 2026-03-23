@@ -1,0 +1,47 @@
+{
+  "name": "d-tox",
+  "version": "1.0.0",
+  "description": "Detox your YouTube. Hide distractions, disable autoplay, and reclaim your attention.",
+  "author": "Your Name",
+  "license": "MIT",
+  "type": "module",
+  "volta": {
+    "node": "22.22.1"
+  },
+  "scripts": {
+    "dev": "wxt dev",
+    "build": "wxt build",
+    "build:firefox": "wxt build --browser firefox",
+    "build:chrome": "wxt build --browser chrome",
+    "preview": "wxt preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "youtube",
+    "detox",
+    "extension",
+    "focus",
+    "declutter"
+  ],
+  "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "autoprefixer": "^10.4.27",
+    "lucide-react": "^1.0.1",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.2",
+    "wxt": "^0.20.20"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@wxt-dev/module-react": "^1.2.2",
+    "serve": "^14.2.6",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
+  }
+}
