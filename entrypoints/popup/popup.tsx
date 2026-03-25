@@ -188,24 +188,23 @@ export default function Popup() {
                       {features.map(f => {
                         const on = settings[f.key] as boolean;
                         return (
-                          <label
-                            key={f.key}
-                            className="toggle-row"
-                            title={f.description}
-                          >
-                            <span className="toggle-label">
-                              {f.label.replace('Hide ', '').replace('Disable ', '')}
-                            </span>
+                          <div key={f.key} className="toggle-row">
+                            <div className="toggle-text">
+                              <span className="toggle-label">
+                                {f.label.replace('Hide ', '').replace('Disable ', '')}
+                              </span>
+                              <span className="toggle-desc">{f.description}</span>
+                            </div>
                             <button
                               className={`switch ${on ? 'on' : 'off'}`}
                               onClick={(e) => { e.preventDefault(); handleToggle(f.key); }}
                               role="switch"
                               aria-checked={on}
-                              aria-label={f.description}
+                              aria-label={f.label}
                             >
                               <span className="switch-thumb" />
                             </button>
-                          </label>
+                          </div>
                         );
                       })}
                     </div>
