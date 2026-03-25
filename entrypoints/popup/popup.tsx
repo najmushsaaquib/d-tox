@@ -10,7 +10,7 @@ import { PRESETS } from '../../src/utils/presets';
 type Tab = 'toggles' | 'presets' | 'more';
 
 const DONATE_UPI = 'upi://pay?pa=yesnajmush@ybl&pn=Najmush&cu=INR';
-const FEATURE_FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSe_PLACEHOLDER/viewform';
+const FEATURE_FORM = 'https://forms.gle/B1eb14KJGTRoiS179';
 const GITHUB_URL = 'https://github.com/najmushsaaquib/d-tox';
 
 export default function Popup() {
