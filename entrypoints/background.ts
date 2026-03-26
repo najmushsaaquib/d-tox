@@ -4,7 +4,7 @@
  */
 
 import { defineBackground } from 'wxt/utils/define-background';
-import { loadSettings, resetSettings } from '../src/utils/storage';
+import { loadSettings, resetSettings, onSettingsChange } from '../src/utils/storage';
 
 export default defineBackground(() => {
   /**
@@ -12,21 +12,24 @@ export default defineBackground(() => {
    */
   chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-      console.log('[YouTube Declutter] Extension installed');
+      console.log('[D-Tox] Extension installed');
 
       // Initialize default settings on first install
       try {
         const settings = await loadSettings();
-        console.log('[YouTube Declutter] Settings initialized:', settings);
+        console.log('[D-Tox] Settings initialized:', settings);
       } catch (error) {
-        console.error('[YouTube Declutter] Failed to initialize settings:', error);
+        console.error('[D-Tox] Failed to initialize settings:', error);
         await resetSettings();
       }
 
-      // Open options page on first install
-      chrome.runtime.openOptionsPage();
+      // Open welcome page on first install
+      chrome.tabs.create({
+        url: chrome.runtime.getURL('welcome.html'),
+        active: true
+      });
     } else if (details.reason === 'update') {
-      console.log('[YouTube Declutter] Extension updated');
+      console.log('[D-Tox] Extension updated');
     }
   });
 
@@ -40,6 +43,34 @@ export default defineBackground(() => {
   } catch (e) {
     // Silently fail if API not available
   }
+
+  /**
+   * Update icon based on extension enabled/disabled state
+   */
+  async function updateIcon() {
+    try {
+      const settings = await loadSettings();
+      const path = settings.extensionEnabled
+        ? { 16: 'icon-16.png', 48: 'icon-48.png', 128: 'icon-128.png' }
+        : { 16: 'icon-paused-16.png', 48: 'icon-paused-48.png', 128: 'icon-paused-128.png' };
+
+      chrome.action.setIcon({ path });
+    } catch (error) {
+      console.error('[D-Tox] Failed to update icon:', error);
+    }
+  }
+
+  /**
+   * Listen for settings changes to update icon
+   */
+  onSettingsChange((newSettings) => {
+    updateIcon();
+  });
+
+  /**
+   * Set initial icon on startup
+   */
+  updateIcon();
 
   /**
    * Message passing for cross-component communication
@@ -66,5 +97,5 @@ export default defineBackground(() => {
     }
   });
 
-  console.log('[YouTube Declutter] Background service worker loaded');
+  console.log('[D-Tox] Background service worker loaded');
 });

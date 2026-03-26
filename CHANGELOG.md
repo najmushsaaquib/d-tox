@@ -5,6 +5,47 @@ All notable changes to D-Tox will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-03-26
+
+### Added
+- "Made with ❤️ by Najmush" in footer and More tab now links to GitHub profile
+- Welcome page: D-Tox logo pill is now fully non-selectable (`user-select: none`, `cursor: default`) — behaves as a single atomic logo unit
+
+### Fixed
+- Version label in More tab was hardcoded to `v1.0.1` — now reads dynamically from manifest
+- Text cursor appearing on hover over logo pill text in welcome page
+
+### Changed
+- Welcome page store badge detects browser at runtime (Chrome/Brave, Firefox, Edge) and shows the correct store name
+
+---
+
+## [1.1.0] - 2026-03-25
+
+### Added
+- New D-Tox brand icon: play-button triangle shape, red body + blue tip (active), colors swap fully when paused
+- Dynamic toolbar icon swap via `chrome.action.setIcon()` — reflects active/paused state in real time
+- Welcome page shown on first install (Matrix red/blue pill concept, hands image, store badge)
+- Browser store badge auto-detects Chrome/Firefox/Edge and links to the appropriate store listing
+- Brand tokens documented in `assets/brand.md`
+
+### Changed
+- Replaced hover tooltips with always-visible subtitle descriptions under each toggle (iOS Settings pattern)
+- Extension renamed from `youtube-declutter` to `D-Tox` throughout codebase, manifest, and GitHub
+
+### Fixed
+- Popup logo now correctly reflects paused state (red↔blue color swap)
+
+---
+
+## [1.0.1] - 2026-03-24
+
+### Fixed
+- Tooltip overlap: tooltips on toggle items were covering adjacent rows
+- Request Feature button now opens Google Form directly
+
+---
+
 ## [1.0.0] - 2026-03-23
 
 ### Added
