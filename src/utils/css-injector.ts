@@ -6,7 +6,7 @@ import { HIDE_CSS_RULES } from '../constants/youtube-elements';
  * This creates and maintains a style tag that gets updated whenever settings change
  */
 
-const STYLE_TAG_ID = 'yt-declutter-styles';
+const STYLE_TAG_ID = 'd-tox-styles';
 
 /**
  * Generate CSS rules based on current settings
@@ -146,7 +146,7 @@ export function applyAllRules(settings: Settings): void {
   // Inject scripts for feature disabling
   injectDisableScripts(settings);
 
-  console.debug('[YouTube Declutter] Rules applied', settings);
+  console.debug('[D-Tox] Rules applied', settings);
 }
 
 /**

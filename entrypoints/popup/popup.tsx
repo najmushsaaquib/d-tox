@@ -9,9 +9,10 @@ import { PRESETS } from '../../src/utils/presets';
 
 type Tab = 'toggles' | 'presets' | 'more';
 
-const DONATE_UPI = 'upi://pay?pa=yesnajmush@ybl&pn=Najmush&cu=INR';
-const FEATURE_FORM = 'https://forms.gle/B1eb14KJGTRoiS179';
-const GITHUB_URL = 'https://github.com/najmushsaaquib/d-tox';
+const DONATE_UPI      = 'upi://pay?pa=yesnajmush@ybl&pn=Najmush&cu=INR';
+const FEATURE_FORM    = 'https://forms.gle/B1eb14KJGTRoiS179';
+const GITHUB_URL      = 'https://github.com/najmushsaaquib/d-tox';
+const GITHUB_PROFILE  = 'https://github.com/najmushsaaquib';
 
 export default function Popup() {
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -129,13 +130,20 @@ export default function Popup() {
       <header className="header">
         <div className="header-left">
           <div className="logo">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" fill="#ff4444"/>
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10" stroke="#4ade80" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.8"/>
+            <svg width="22" height="22" viewBox="0 0 128 128" fill="none">
+              <clipPath id="logo-clip">
+                <path d="M36,26 L36,102 C36,104 38,105 41,103 L102,69 C105,67 105,61 102,59 L41,25 C38,23 36,24 36,26 Z"/>
+              </clipPath>
+              <g clipPath="url(#logo-clip)">
+                {/* Body: red when active, blue when paused */}
+                <rect x="0" y="0" width="128" height="128" fill={settings.extensionEnabled ? '#e53e3e' : '#60a5fa'}/>
+                {/* Tip: blue when active, red when paused — exact swap */}
+                <circle cx="102" cy="64" r="26" fill={settings.extensionEnabled ? '#60a5fa' : '#e53e3e'}/>
+              </g>
             </svg>
             <span className="brand">D-Tox</span>
           </div>
-          <span className="version">v1.0</span>
+          <span className="version">v{chrome.runtime?.getManifest?.()?.version ?? '1.1.0'}</span>
         </div>
         <button
           className={`master-toggle ${settings.extensionEnabled ? 'on' : 'off'}`}
@@ -266,10 +274,6 @@ export default function Popup() {
                 <span>⭐</span> Star on GitHub
               </a>
             </div>
-            <div className="more-footer">
-              <p>D-Tox v1.0</p>
-              <p className="more-subtle">Made with ❤️ by Najmush</p>
-            </div>
           </div>
         )}
       </div>
@@ -280,7 +284,7 @@ export default function Popup() {
         <span className="footer-dot">·</span>
         <a href={FEATURE_FORM} target="_blank" rel="noopener noreferrer">💡 Request Feature</a>
         <span className="footer-dot">·</span>
-        <span className="footer-love">Made with ❤️ by Najmush</span>
+        <span className="footer-love">Made with ❤️ by <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" className="author-link">Najmush</a></span>
       </footer>
 
       {/* Toast */}

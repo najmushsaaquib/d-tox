@@ -6,11 +6,12 @@ export default defineConfig({
   outDir: 'dist',
   manifest: {
     name: 'D-Tox: YouTube Detox',
-    version: '1.0.0',
+    version: '1.1.0',
     description: 'Detox your YouTube. Hide distractions, disable autoplay, and reclaim your attention.',
     permissions: [
       'storage',
-      'activeTab'
+      'activeTab',
+      'tabs'
     ],
     host_permissions: [
       'https://www.youtube.com/*',

@@ -1,10 +1,10 @@
-# D-Tox: YouTube Detox
+# D-Tox: Detox Your YouTube
 
 Reclaim your attention. D-Tox is a browser extension that strips away YouTube's addictive elements so you only see what you intentionally search for.
 
 ## Why
 
-YouTube's algorithm is designed to keep you scrolling. Home feed, Shorts, sidebar recommendations, autoplay - they all exist to maximize your watch time, not your well-being. D-Tox puts you back in control.
+YouTube's algorithm is designed to keep you scrolling. Home feed, Shorts, sidebar recommendations, autoplay — they all exist to maximize your watch time, not your well-being. D-Tox puts you back in control.
 
 ## Features
 
@@ -19,16 +19,26 @@ YouTube's algorithm is designed to keep you scrolling. Home feed, Shorts, sideba
 | Controls | Autoplay, Annotations |
 
 **4 presets** for quick setup:
-- **Minimal** - Only search + player. Maximum focus.
-- **Focus** - Keep sidebar, hide distractions.
-- **Light** - Subtle tweaks, mostly untouched.
-- **Custom** - You decide what stays.
+- **Minimal** — Only search + player. Maximum focus.
+- **Focus** — Keep sidebar, hide distractions.
+- **Light** — Subtle tweaks, mostly untouched.
+- **Custom** — You decide what stays.
 
-**Master toggle** - Pause/enable D-Tox instantly from the header.
+**Master toggle** — Pause/enable D-Tox instantly from the header.
 
-**Cross-browser** - Works on Chrome, Brave, Edge, and Firefox.
+**Cross-browser** — Works on Chrome, Brave, Edge, and Firefox.
 
 ## Install
+
+### Quick install (no code needed)
+
+1. Go to [Releases](https://github.com/najmushsaaquib/d-tox/releases/latest)
+2. Download `D-Tox-vX.X.X-chrome.zip`
+3. Unzip it anywhere on your computer
+4. Open `chrome://extensions` (works on Chrome, Brave, Edge)
+5. Enable **Developer mode** (top-right toggle)
+6. Click **Load unpacked** → select the unzipped folder
+7. Done! Click the D-Tox icon in your toolbar
 
 ### From source
 
@@ -41,15 +51,15 @@ npm run build
 
 Then load the extension:
 
-- **Chrome/Brave/Edge**: Go to `chrome://extensions/` > Enable Developer Mode > Load Unpacked > Select `dist/chrome-mv3/`
-- **Firefox**: Go to `about:debugging` > This Firefox > Load Temporary Add-on > Select `dist/chrome-mv3/manifest.json`
+- **Chrome/Brave/Edge**: `chrome://extensions` → Developer Mode → Load Unpacked → select `dist/chrome-mv3/`
+- **Firefox**: `about:debugging` → This Firefox → Load Temporary Add-on → select `dist/chrome-mv3/manifest.json`
 
 ### Development
 
 ```bash
-npm run dev          # Dev server with HMR
-npm run build        # Production build (Chrome)
-npm run build:firefox # Production build (Firefox)
+npm run dev            # Dev server with HMR
+npm run build          # Production build (Chrome)
+npm run build:firefox  # Production build (Firefox)
 ```
 
 ## Project Structure
@@ -58,7 +68,7 @@ npm run build:firefox # Production build (Firefox)
 d-tox/
 ├── entrypoints/           # WXT entry points
 │   ├── popup/             # Extension popup (main UI)
-│   ├── options/           # Options page (redirect)
+│   ├── options/           # Options page
 │   ├── content.ts         # YouTube DOM manipulation
 │   ├── background.ts      # Service worker
 │   └── styles/            # CSS
@@ -66,6 +76,7 @@ d-tox/
 │   ├── utils/             # Storage, CSS injection, types
 │   └── constants/         # YouTube element selectors
 ├── public/                # Icons
+├── assets/                # Branding assets
 ├── dist/                  # Build output (load this in browser)
 ├── wxt.config.ts          # WXT configuration
 └── package.json
@@ -75,7 +86,7 @@ d-tox/
 
 1. **Content script** runs on youtube.com pages
 2. Reads your toggle settings from Chrome Storage
-3. Injects CSS rules to hide selected elements (`display: none !important`)
+3. Injects CSS rules to hide selected elements
 4. Uses a MutationObserver to handle YouTube's dynamic content loading
 5. Master toggle can pause all rules instantly
 
@@ -92,15 +103,15 @@ Contributions welcome! Fork, create a branch, make your changes, and submit a PR
 
 ## Tech Stack
 
-- **WXT** - Cross-browser extension framework
-- **React 19** - UI
-- **TypeScript** - Type safety
-- **Chrome Storage API** - Settings persistence
+- **WXT** — Cross-browser extension framework
+- **React 19** — UI
+- **TypeScript** — Type safety
+- **Chrome Storage API** — Settings persistence
 
 ## Support
 
-- **Donate**: UPI `yesnajmush@ybl`
-- **Feature Request**: [Google Form](https://docs.google.com/forms)
+- **Donate**: [PayPal](http://paypal.me/hanjinajmush) or UPI `yesnajmush@ybl` (in-extension popup coming soon)
+- **Feature Request**: [Submit here](https://forms.gle/B1eb14KJGTRoiS179)
 - **Bug Report**: [GitHub Issues](https://github.com/najmushsaaquib/d-tox/issues)
 
 ## License
@@ -109,4 +120,4 @@ MIT
 
 ---
 
-Made with love by [Najmush](https://najmushsaaquib.com)
+Made with ❤️ by [Najmush](https://najmushsaaquib.com) • [Open Source](https://github.com/najmushsaaquib/d-tox)

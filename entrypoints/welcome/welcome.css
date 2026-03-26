@@ -1,0 +1,355 @@
+/* ── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red:       #e53e3e;
+  --red-dim:   #c53030;
+  --red-soft:  rgba(229,62,62,0.14);
+  --red-glow:  rgba(229,62,62,0.35);
+  --blue:      #2563eb;
+  --blue-soft: rgba(37,99,235,0.14);
+  --bg:        #000000;   /* true black — matches inverted image bg */
+  --surface:   #0f0f0f;
+  --border:    rgba(255,255,255,0.07);
+  --text:      #f0f0f0;
+  --muted:     #555;
+  --radius:    13px;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo float — subtle vertical drift */
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-3px); }
+}
+
+/* Logo glow pulse */
+@keyframes logoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent, 0 0 14px var(--red-glow); }
+  50%       { box-shadow: 0 0 0 3px rgba(229,62,62,0.12), 0 0 22px var(--red-glow); }
+}
+
+/* Staggered reveal — used on every element */
+.reveal {
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ── Top section — logo + headline, full-width centered ─────────────────── */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0 22px;
+  flex-shrink: 0;
+  gap: 16px;
+}
+
+/* ── Logo pill ──────────────────────────────────────────────────────────── */
+.logo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  padding: 6px 18px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(229,62,62,0.25);
+  /* Treat the whole pill as one atomic unit */
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+  /* Glow pulse */
+  animation: logoPulse 3s ease-in-out infinite;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.logo-pill:hover {
+  border-color: rgba(229,62,62,0.55);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 0 0 3px rgba(229,62,62,0.08), 0 0 24px rgba(229,62,62,0.25);
+}
+
+.logo-icon-wrap {
+  display: flex;
+  align-items: center;
+  /* Float separately from the pill so glow stays stable */
+  animation: logoFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(229,62,62,0.6)) drop-shadow(0 0 2px rgba(96,165,250,0.3));
+}
+
+.logo-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  /* Part of the logo — not independently selectable */
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Kill text cursor on every child of the pill */
+.logo-pill * {
+  cursor: default !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Headline — two lines ───────────────────────────────────────────────── */
+.hero-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/* H3 — greeting */
+.headline-welcome {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: rgba(255,255,255,0.45);
+}
+
+/* H2 — the statement, bigger and heavier */
+.headline-choice {
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  background: linear-gradient(140deg, #fff 0%, #888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Chrome Web Store badge ─────────────────────────────────────────────── */
+.store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 20px 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+/* Active — store is live */
+.store-badge:not(.store-badge--soon):hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+.store-badge:not(.store-badge--soon) .store-badge__icon { color: #60a5fa; }
+.store-badge:not(.store-badge--soon) .store-badge__text { color: #fff; }
+
+/* Placeholder — not yet published */
+.store-badge--soon {
+  cursor: default;
+  opacity: 0.55;
+}
+.store-badge--soon .store-badge__icon { color: var(--muted); }
+.store-badge--soon .store-badge__text { color: rgba(255,255,255,0.4); }
+
+.store-badge__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.store-badge__text {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+}
+
+.store-badge__pill {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+/* ── Bottom grid — two columns, no visible separation ───────────────────── */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Left — text ─────────────────────────────────────────────────────────── */
+.text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 48px 24px 0;
+  gap: 18px;
+}
+
+.block  { display: flex; flex-direction: column; gap: 8px; }
+
+.block-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.block-body {
+  font-size: 15.5px;
+  color: rgba(255,255,255,0.58);
+  line-height: 1.75;
+}
+.block-body strong { color: var(--text); font-weight: 600; }
+
+/* ── Pin steps ──────────────────────────────────────────────────────────── */
+.pin-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 16px;
+}
+
+.pin-step {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.58);
+}
+.pin-step strong { color: var(--text); }
+
+.step-num {
+  width: 21px; height: 21px;
+  border-radius: 50%;
+  background: var(--red-soft);
+  border: 1px solid rgba(229,62,62,0.3);
+  color: var(--red);
+  font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.action-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.action-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 17px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none; cursor: pointer;
+}
+.action-btn.primary  { background: var(--red); color: #fff; }
+.action-btn.primary:hover  { background: var(--red-dim); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(229,62,62,0.3); }
+.action-btn.secondary { background: var(--blue-soft); color: #93c5fd; border: 1px solid rgba(37,99,235,0.3); }
+.action-btn.secondary:hover { background: rgba(37,99,235,0.2); transform: translateY(-1px); }
+.action-btn.ghost { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); border: 1px solid var(--border); }
+.action-btn.ghost:hover { background: rgba(255,255,255,0.08); color: #fff; transform: translateY(-1px); }
+
+/* ── Sign-off ───────────────────────────────────────────────────────────── */
+.sign-off { font-size: 15px; color: rgba(255,255,255,0.3); line-height: 1.9; }
+.signature {
+  display: block; color: rgba(255,255,255,0.75);
+  font-weight: 600; font-size: 16px; margin-top: 3px;
+}
+.tagline {
+  display: block; font-size: 13px;
+  color: var(--muted); font-style: italic; margin-top: 1px;
+}
+
+/* ── Right — image ──────────────────────────────────────────────────────── */
+.image-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0 20px 44px;
+  gap: 12px;
+}
+
+/*
+  Image has white background.
+  invert(1) hue-rotate(180deg) → white bg becomes pure #000, colours restored.
+  No visible box. Seamlessly submerged into --bg.
+*/
+.hands-img {
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100vh - 160px);
+  object-fit: contain;
+  filter: invert(1) hue-rotate(180deg) contrast(0.95) brightness(0.9);
+}
+
+.ps-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  html, body { overflow: auto; height: auto; }
+  .page { height: auto; min-height: 100vh; padding: 0 20px 52px; }
+
+  .bottom-grid { grid-template-columns: 1fr; }
+
+  .text-col {
+    padding: 16px 0 20px;
+    order: 1;
+  }
+
+  .image-col {
+    padding: 20px 0 0;
+    order: 2;
+  }
+
+  .hands-img { max-height: 280px; }
+  .headline-welcome { font-size: 34px; }
+  .headline-choice  { font-size: 16px; }
+}

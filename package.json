@@ -1,6 +1,6 @@
 {
   "name": "d-tox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Detox your YouTube. Hide distractions, disable autoplay, and reclaim your attention.",
   "author": "Your Name",
   "license": "MIT",
@@ -40,6 +40,7 @@
     "@types/react": "^19.2.14",
     "@wxt-dev/module-react": "^1.2.2",
     "serve": "^14.2.6",
+    "sharp": "^0.34.5",
     "webpack": "^5.105.4",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.3"
