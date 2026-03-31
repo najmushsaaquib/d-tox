@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Settings, FEATURE_METADATA, CATEGORY_INFO } from '../../src/utils/types';
 import {
   loadSettings, saveSettings, loadCurrentPreset,
@@ -9,17 +9,114 @@ import { PRESETS } from '../../src/utils/presets';
 
 type Tab = 'toggles' | 'presets' | 'more';
 
-const DONATE_UPI      = 'upi://pay?pa=yesnajmush@ybl&pn=Najmush&cu=INR';
-const FEATURE_FORM    = 'https://forms.gle/B1eb14KJGTRoiS179';
-const GITHUB_URL      = 'https://github.com/najmushsaaquib/d-tox';
-const GITHUB_PROFILE  = 'https://github.com/najmushsaaquib';
+const UPI_ID         = 'yesnajmush@ybl';
+const PAYPAL_URL     = 'https://paypal.me/hanjinajmush';
+const FEATURE_FORM   = 'https://forms.gle/B1eb14KJGTRoiS179';
+const BUG_FORM       = 'https://forms.gle/dLTobfdskRPJ6poY6';
+const GITHUB_URL     = 'https://github.com/najmushsaaquib/d-tox';
+const GITHUB_PROFILE = 'https://github.com/najmushsaaquib';
 
+// ── Support Modal ─────────────────────────────────────────────────────────────
+function SupportModal({ onClose, showToast }: { onClose: () => void; showToast: (msg: string) => void }) {
+  const backdropRef = useRef<HTMLDivElement>(null);
+
+  // Close on ESC
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  const copyUPI = async () => {
+    await navigator.clipboard.writeText(UPI_ID);
+    showToast('UPI ID copied');
+  };
+
+  return (
+    <div
+      className="modal-backdrop"
+      ref={backdropRef}
+      onClick={e => { if (e.target === backdropRef.current) onClose(); }}
+    >
+      <div className="modal" role="dialog" aria-modal="true" aria-label="Support D-Tox">
+
+        {/* Header */}
+        <div className="modal-header">
+          <span className="modal-title">Support D-Tox</span>
+          <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
+        </div>
+
+        {/* Section 1 — Share */}
+        <div className="modal-section">
+          <p className="modal-lead">
+            The best way to support D-Tox is to <strong>share it</strong> — with a friend, a colleague, anyone
+            who deserves a cleaner YouTube. Help them reclaim their attention too.
+          </p>
+          <a
+            className="modal-share-btn"
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Share the extension →
+          </a>
+        </div>
+
+        <div className="modal-divider" />
+
+        {/* Section 2 — Financial */}
+        <div className="modal-section">
+          <p className="modal-sublabel">Want to support financially? No pressure — but it means a lot.</p>
+
+          {/* PayPal */}
+          <a
+            className="modal-pay-row"
+            href={PAYPAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="modal-pay-logo">
+              {/* PayPal wordmark SVG */}
+              <svg viewBox="0 0 80 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PayPal">
+                <text x="0" y="16" fontFamily="-apple-system,sans-serif" fontSize="15" fontWeight="700" fill="#003087">Pay</text>
+                <text x="28" y="16" fontFamily="-apple-system,sans-serif" fontSize="15" fontWeight="700" fill="#009cde">Pal</text>
+              </svg>
+            </span>
+            <span className="modal-pay-text">Pay via PayPal</span>
+            <span className="modal-pay-arrow">↗</span>
+          </a>
+
+          {/* UPI */}
+          <div className="modal-pay-row modal-upi-row">
+            <span className="modal-pay-logo">
+              {/* UPI wordmark */}
+              <svg viewBox="0 0 44 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="UPI">
+                <text x="0" y="15" fontFamily="-apple-system,sans-serif" fontSize="13" fontWeight="800" fill="#097939">U</text>
+                <text x="11" y="15" fontFamily="-apple-system,sans-serif" fontSize="13" fontWeight="800" fill="#FF6B35">P</text>
+                <text x="22" y="15" fontFamily="-apple-system,sans-serif" fontSize="13" fontWeight="800" fill="#097939">I</text>
+              </svg>
+            </span>
+            <div className="modal-upi-body">
+              <span className="modal-upi-id">{UPI_ID}</span>
+              <span className="modal-upi-hint">GPay · PhonePe · Paytm · any UPI app</span>
+            </div>
+            <button className="modal-copy-btn" onClick={copyUPI}>Copy</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ── Popup ─────────────────────────────────────────────────────────────────────
 export default function Popup() {
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const [settings, setSettings]         = useState<Settings | null>(null);
   const [currentPreset, setCurrentPreset] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>('toggles');
+  const [activeTab, setActiveTab]       = useState<Tab>('toggles');
   const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set(['feed']));
-  const [toast, setToast] = useState<string | null>(null);
+  const [toast, setToast]               = useState<string | null>(null);
+  const [showSupport, setShowSupport]   = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -119,13 +216,12 @@ export default function Popup() {
     grouped[f.category].push(f);
   });
 
-  const countActive = (cat: string) => {
-    const features = grouped[cat] || [];
-    return features.filter(f => settings[f.key] as boolean).length;
-  };
+  const countActive = (cat: string) =>
+    (grouped[cat] || []).filter(f => settings[f.key] as boolean).length;
 
   return (
     <div className={`popup ${!settings.extensionEnabled ? 'disabled' : ''}`}>
+
       {/* Header */}
       <header className="header">
         <div className="header-left">
@@ -135,9 +231,7 @@ export default function Popup() {
                 <path d="M36,26 L36,102 C36,104 38,105 41,103 L102,69 C105,67 105,61 102,59 L41,25 C38,23 36,24 36,26 Z"/>
               </clipPath>
               <g clipPath="url(#logo-clip)">
-                {/* Body: red when active, blue when paused */}
                 <rect x="0" y="0" width="128" height="128" fill={settings.extensionEnabled ? '#e53e3e' : '#60a5fa'}/>
-                {/* Tip: blue when active, red when paused — exact swap */}
                 <circle cx="102" cy="64" r="26" fill={settings.extensionEnabled ? '#60a5fa' : '#e53e3e'}/>
               </g>
             </svg>
@@ -150,9 +244,7 @@ export default function Popup() {
           onClick={handleMasterToggle}
           title={settings.extensionEnabled ? 'Pause D-Tox' : 'Enable D-Tox'}
         >
-          <span className="master-track">
-            <span className="master-thumb" />
-          </span>
+          <span className="master-track"><span className="master-thumb" /></span>
         </button>
       </header>
 
@@ -166,7 +258,7 @@ export default function Popup() {
           >
             {tab === 'toggles' && 'Toggles'}
             {tab === 'presets' && 'Presets'}
-            {tab === 'more' && 'More'}
+            {tab === 'more'    && 'More'}
           </button>
         ))}
       </nav>
@@ -178,8 +270,8 @@ export default function Popup() {
         {activeTab === 'toggles' && (
           <div className="toggles-tab">
             {Object.entries(grouped).map(([cat, features]) => {
-              const info = CATEGORY_INFO[cat];
-              const active = countActive(cat);
+              const info     = CATEGORY_INFO[cat];
+              const active   = countActive(cat);
               const expanded = expandedCats.has(cat);
               return (
                 <div key={cat} className="category">
@@ -205,7 +297,7 @@ export default function Popup() {
                             </div>
                             <button
                               className={`switch ${on ? 'on' : 'off'}`}
-                              onClick={(e) => { e.preventDefault(); handleToggle(f.key); }}
+                              onClick={e => { e.preventDefault(); handleToggle(f.key); }}
                               role="switch"
                               aria-checked={on}
                               aria-label={f.label}
@@ -261,13 +353,13 @@ export default function Popup() {
             <div className="more-divider" />
             <div className="more-section">
               <h3 className="more-heading">Support</h3>
-              <a className="more-btn" href={DONATE_UPI}>
-                <span>💸</span> Donate via UPI
-              </a>
+              <button className="more-btn" onClick={() => setShowSupport(true)}>
+                <span>🤝</span> Support D-Tox
+              </button>
               <a className="more-btn" href={FEATURE_FORM} target="_blank" rel="noopener noreferrer">
                 <span>💡</span> Request a Feature
               </a>
-              <a className="more-btn" href={GITHUB_URL + '/issues'} target="_blank" rel="noopener noreferrer">
+              <a className="more-btn" href={BUG_FORM} target="_blank" rel="noopener noreferrer">
                 <span>🐛</span> Report a Bug
               </a>
               <a className="more-btn" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
@@ -280,12 +372,17 @@ export default function Popup() {
 
       {/* Footer */}
       <footer className="footer">
-        <a href={DONATE_UPI}>💸 Donate</a>
+        <button className="footer-btn" onClick={() => setShowSupport(true)}>🤝 Support</button>
         <span className="footer-dot">·</span>
         <a href={FEATURE_FORM} target="_blank" rel="noopener noreferrer">💡 Request Feature</a>
         <span className="footer-dot">·</span>
         <span className="footer-love">Made with ❤️ by <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" className="author-link">Najmush</a></span>
       </footer>
+
+      {/* Support Modal */}
+      {showSupport && (
+        <SupportModal onClose={() => setShowSupport(false)} showToast={showToast} />
+      )}
 
       {/* Toast */}
       {toast && <div className="toast">{toast}</div>}

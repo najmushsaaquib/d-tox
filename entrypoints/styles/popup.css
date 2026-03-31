@@ -487,6 +487,192 @@ body {
   border-color: rgba(255,255,255,0.4);
 }
 
+/* ── Footer button (Support) ── */
+.footer-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition);
+}
+.footer-btn:hover { color: var(--text-primary); }
+
+/* ── Support Modal ── */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-end;
+  z-index: 200;
+  animation: backdropIn 0.18s ease;
+}
+
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  width: 100%;
+  background: #181818;
+  border-top: 1px solid var(--border-light);
+  border-radius: 16px 16px 0 0;
+  padding: 0 0 8px;
+  animation: modalUp 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes modalUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.1px;
+}
+
+.modal-close {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition);
+}
+.modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.modal-section { padding: 14px 16px; }
+
+.modal-lead {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+.modal-lead strong { color: var(--text-primary); font-weight: 600; }
+
+.modal-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background var(--transition), transform var(--transition);
+}
+.modal-share-btn:hover { background: #cc3333; transform: translateY(-1px); }
+
+.modal-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 16px;
+}
+
+.modal-sublabel {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Payment rows */
+.modal-pay-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  transition: all var(--transition);
+  margin-bottom: 8px;
+}
+.modal-pay-row:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.modal-pay-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 44px;
+}
+.modal-pay-logo svg { width: 100%; height: auto; }
+
+.modal-pay-text { flex: 1; font-weight: 500; }
+.modal-pay-arrow { color: var(--text-muted); font-size: 13px; }
+
+/* UPI row — not a link, no hover redirect */
+.modal-upi-row {
+  cursor: default;
+  margin-bottom: 0;
+}
+.modal-upi-row:hover { background: var(--bg-secondary); border-color: var(--border); color: var(--text-secondary); }
+
+.modal-upi-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-upi-id {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3px;
+}
+
+.modal-upi-hint {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.modal-copy-btn {
+  padding: 5px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.modal-copy-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+
 /* ── Toast ── */
 .toast {
   position: fixed;
