@@ -5,6 +5,29 @@ All notable changes to D-Tox will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-31
+
+### Added
+- **Support modal** — replaces bare UPI link with a polished slide-up modal containing two clear sections:
+  - *Share* — prompts users to share the extension with friends/family as the primary form of support
+  - *Financial* — PayPal (clickable, opens in new tab) and UPI ID (`yesnajmush@ybl`) displayed inline with a one-click copy button
+- **Bug Report Google Form** — accessible to all users regardless of technical ability; replaces direct GitHub Issues link. Form includes browser, page context, frequency, and optional screenshot link fields. GitHub Issues link added at the bottom of the form itself for developers.
+- UPI hint text ("GPay · PhonePe · Paytm · any UPI app") shown inline — no tooltip friction
+
+### Changed
+- "Donate" renamed to "Support" throughout (footer + More tab) with 🤝 icon to avoid conflict with ❤️ in "Made with love" sign-off
+- Support footer button no longer links directly to UPI — opens modal instead
+
+### Fixed
+- Removed broken hover tooltip on UPI hint that was obscuring the UPI ID and rendering outside the modal bounds
+
+---
+
+All notable changes to D-Tox will be documented in this file.
+
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [1.1.1] - 2026-03-26
 
 ### Added

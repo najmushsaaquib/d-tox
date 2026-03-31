@@ -110,9 +110,9 @@ Contributions welcome! Fork, create a branch, make your changes, and submit a PR
 
 ## Support
 
-- **Donate**: [PayPal](http://paypal.me/hanjinajmush) or UPI `yesnajmush@ybl` (in-extension popup coming soon)
+- **Support the project**: Click 🤝 Support in the extension popup — share it, or contribute financially via PayPal / UPI
 - **Feature Request**: [Submit here](https://forms.gle/B1eb14KJGTRoiS179)
-- **Bug Report**: [GitHub Issues](https://github.com/najmushsaaquib/d-tox/issues)
+- **Bug Report**: [Submit here](https://forms.gle/dLTobfdskRPJ6poY6)
 
 ## License
 
