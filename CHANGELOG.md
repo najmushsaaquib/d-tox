@@ -5,6 +5,38 @@ All notable changes to D-Tox will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-31
+
+### Added
+- **Pure CSS Shorts blocking** — `ytd-video-renderer:has(a#thumbnail[href^="/shorts/"])` hides individual Shorts in search results instantly, no JS scanning needed
+- **New YouTube DOM support** — targets `grid-shelf-view-model`, `ytm-shorts-lockup-view-model`, `ytm-shorts-lockup-view-model-v2` (YouTube 2025+ elements)
+- **Shorts filter chip hiding** — the "Shorts" chip in search filter bar is now hidden via JS marker + CSS
+- **Instant toggle feedback** — popup sends `chrome.tabs.sendMessage()` directly to content script; no waiting for storage events
+- **Layout reflow guarantee** — `void document.body.offsetHeight` after every CSS update forces immediate visual changes
+- **YouTube SPA event listener** — uses native `yt-navigate-finish` event instead of heavy MutationObserver for page navigation detection
+- **Style tag watchdog** — monitors `<head>` for removal of D-Tox style tag and re-injects immediately
+- **Explore section JS marker** — marks guide sections containing Trending/Shopping/Gaming for reliable hiding
+
+### Fixed
+- **Shorts reload loop** — removed blanket `grid-shelf-view-model` and `[is-shorts]` selectors that hid all search content, causing infinite scroll cascade
+- **Sidebar not centering on toggle** — added `#primary { max-width: none !important }` to override YouTube's locked two-column width
+- **Header toggle leaving gap** — added `ytd-page-manager { margin-top: 0 !important }` to remove 56px placeholder
+- **Style tag removal loop** — `injectStyles` now updates `textContent` in-place instead of remove+recreate cycle
+- **Explore section not hiding** — replaced individual link targeting with whole `ytd-guide-section-renderer` targeting via `:has()` and JS marker
+
+### Changed
+- Shorts hiding moved from JS marker approach to pure CSS `:has()` selectors for zero-latency hiding
+- Navigation detection changed from `MutationObserver(body, subtree)` to `yt-navigate-finish` event + lightweight `setInterval(1000)` fallback
+- Element marker interval reduced from aggressive MutationObserver to calm `setInterval(2000)`
+- Annotations description updated to "Hides info cards, end screens and clickable overlay links that appear during videos"
+
+### Removed
+- Broken `[is-shorts]` blanket CSS selector
+- Heavy `MutationObserver` on `document.body` with `subtree: true`
+- JS-based Shorts marking for search results (replaced by pure CSS)
+
+---
+
 ## [1.2.0] - 2026-03-31
 
 ### Added
@@ -22,11 +54,6 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Removed broken hover tooltip on UPI hint that was obscuring the UPI ID and rendering outside the modal bounds
 
 ---
-
-All notable changes to D-Tox will be documented in this file.
-
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.1.1] - 2026-03-26
 

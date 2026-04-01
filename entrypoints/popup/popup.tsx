@@ -137,11 +137,22 @@ export default function Popup() {
     setTimeout(() => setToast(null), 1500);
   }, []);
 
+  /** Notify the active YouTube tab immediately so changes apply without reload */
+  const notifyContentScript = async (next: Settings) => {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tab?.id && tab.url?.includes('youtube.com')) {
+        chrome.tabs.sendMessage(tab.id, { type: 'dtox-settings-changed', settings: next });
+      }
+    } catch { /* tab may not have content script yet — storage listener is the fallback */ }
+  };
+
   const handleToggle = async (key: keyof Settings) => {
     if (!settings) return;
     const next = { ...settings, [key]: !settings[key] };
     setSettings(next);
     await saveSettings(next);
+    notifyContentScript(next);
     setCurrentPreset(null);
   };
 
@@ -150,6 +161,7 @@ export default function Popup() {
     const next = { ...settings, extensionEnabled: !settings.extensionEnabled };
     setSettings(next);
     await saveSettings(next);
+    notifyContentScript(next);
     showToast(next.extensionEnabled ? 'D-Tox enabled' : 'D-Tox paused');
   };
 
@@ -160,6 +172,7 @@ export default function Popup() {
     setCurrentPreset(presetId);
     const s = await loadSettings();
     setSettings(s);
+    notifyContentScript(s);
     showToast(`Applied "${preset.name}"`);
   };
 

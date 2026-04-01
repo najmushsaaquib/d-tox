@@ -203,18 +203,46 @@ export const HIDE_CSS_RULES: Record<string, string> = {
   sidebar: `
     ytd-watch-next-secondary-results-renderer { display: none !important; }
     div#secondary-inner { display: none !important; }
+    #secondary { display: none !important; }
+    #related { display: none !important; }
+    #columns { justify-content: center !important; }
+    #primary { max-width: none !important; }
+    #primary-inner { max-width: none !important; }
+    ytd-watch-flexy[flexy][is-two-columns_] #primary { max-width: none !important; }
   `,
 
   shorts: `
+    /* === Individual Shorts in search/feed — pure CSS, instant === */
+    ytd-video-renderer:has(a#thumbnail[href^="/shorts/"]) { display: none !important; }
+
+    /* === Shorts shelf (horizontal carousel) — YouTube 2025+ === */
+    grid-shelf-view-model:has(ytm-shorts-lockup-view-model) { display: none !important; }
+    grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) { display: none !important; }
+    grid-shelf-view-model:has(a[href^="/shorts/"]) { display: none !important; }
+    ytm-shorts-lockup-view-model { display: none !important; }
+    ytm-shorts-lockup-view-model-v2 { display: none !important; }
+
+    /* === Legacy Shorts shelf === */
     ytd-reel-shelf-renderer { display: none !important; }
+    ytd-reel-item-renderer { display: none !important; }
     ytd-rich-section-renderer[is-shorts] { display: none !important; }
     ytd-rich-shelf-renderer[is-shorts] { display: none !important; }
+    ytd-rich-section-renderer:has(ytd-reel-shelf-renderer) { display: none !important; }
+    ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]) { display: none !important; }
+    ytd-item-section-renderer:has(ytd-reel-shelf-renderer) { display: none !important; }
+    ytd-shelf-renderer[is-shorts-shelf] { display: none !important; }
+
+    /* === Shorts chip in search filter bar (JS-marked by text match) === */
+    yt-chip-cloud-chip-renderer[dtox-shorts-chip] { display: none !important; }
+
+    /* === Shorts nav links (sidebar + mini guide) === */
     a[title="Shorts"] { display: none !important; }
     a[href="/shorts"] { display: none !important; }
-    ytd-mini-guide-entry-renderer a[title="Shorts"] { display: none !important; }
-    ytd-guide-entry-renderer a[title="Shorts"] { display: none !important; }
-    [is-shorts] { display: none !important; }
-    ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]) { display: none !important; }
+    ytd-mini-guide-entry-renderer[aria-label="Shorts"] { display: none !important; }
+    ytd-mini-guide-entry-renderer:has(a[title="Shorts"]) { display: none !important; }
+    ytd-mini-guide-entry-renderer:has(a[href="/shorts"]) { display: none !important; }
+    ytd-guide-entry-renderer:has(a[title="Shorts"]) { display: none !important; }
+    ytd-guide-entry-renderer:has(a[href="/shorts"]) { display: none !important; }
   `,
 
   playlists: `
@@ -245,6 +273,7 @@ export const HIDE_CSS_RULES: Record<string, string> = {
   header: `
     #masthead-container { display: none !important; }
     ytd-masthead { display: none !important; }
+    ytd-page-manager { margin-top: 0 !important; }
   `,
 
   notifications: `
@@ -281,7 +310,54 @@ export const HIDE_CSS_RULES: Record<string, string> = {
   `,
 
   explore: `
+    /* === JS-marked explore section (most reliable) === */
+    ytd-guide-section-renderer[dtox-explore-section] { display: none !important; }
+
+    /* === Whole section by content — :has() targets the section containing these links === */
+    ytd-guide-section-renderer:has(a[title="Trending"]) { display: none !important; }
+    ytd-guide-section-renderer:has(a[title="Shopping"]) { display: none !important; }
+    ytd-guide-section-renderer:has(a[title="Gaming"]) { display: none !important; }
+    ytd-guide-section-renderer:has(a[href*="/feed/trending"]) { display: none !important; }
+    ytd-guide-section-renderer:has(a[href*="/feed/explore"]) { display: none !important; }
+
+    /* === Individual entries fallback === */
+    ytd-guide-entry-renderer:has(a[href*="/feed/trending"]) { display: none !important; }
+    ytd-guide-entry-renderer:has(a[href*="/feed/explore"]) { display: none !important; }
+    ytd-mini-guide-entry-renderer:has(a[href*="/feed/trending"]) { display: none !important; }
+    ytd-mini-guide-entry-renderer:has(a[href*="/feed/explore"]) { display: none !important; }
+
+    /* === Direct link targets === */
     a[href*="/feed/explore"] { display: none !important; }
+    a[href*="/feed/trending"] { display: none !important; }
     a[aria-label*="Explore"] { display: none !important; }
+
+    /* === Trending/Explore page content (if user navigates directly) === */
+    ytd-browse[page-subtype="trending"] ytd-rich-grid-renderer { display: none !important; }
+    ytd-browse[page-subtype="trending"] ytd-section-list-renderer { display: none !important; }
+    ytd-browse[page-subtype="explore"] #content { display: none !important; }
+  `,
+
+  searchFilters: `
+    ytd-search-sub-menu-renderer { display: none !important; }
+    ytd-search-filter-group-renderer { display: none !important; }
+    #filter-menu { display: none !important; }
+  `,
+
+  autoplay: `
+    .ytp-ce-element { display: none !important; }
+    .ytp-endscreen-content { display: none !important; }
+    .ytp-autonav-endscreen { display: none !important; }
+    .ytp-ce-covering-overlay { display: none !important; }
+    .ytp-autonav-toggle-button-container { opacity: 0.35 !important; filter: grayscale(1) !important; pointer-events: none !important; }
+  `,
+
+  annotations: `
+    .ytp-ce-element { display: none !important; }
+    .ytp-cards-teaser { display: none !important; }
+    .ytp-ce-expanding-overlay { display: none !important; }
+    .ytp-cards-button { display: none !important; }
+    .ytp-card { display: none !important; }
+    ytp-card-container { display: none !important; }
+    .ytp-ce-covering-overlay { display: none !important; }
   `
 };
