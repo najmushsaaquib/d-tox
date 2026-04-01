@@ -214,7 +214,7 @@ export const FEATURE_METADATA: FeatureMetadata[] = [
   {
     key: 'disableAnnotations',
     label: 'Disable Annotations',
-    description: 'Hide interactive annotations and cards',
+    description: 'Hides info cards, end screens and clickable overlay links that appear during videos',
     category: 'functionality'
   }
 ];

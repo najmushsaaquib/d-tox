@@ -32,7 +32,10 @@ function generateHideRules(settings: Settings): string {
     hideScreenCards: 'screenCards',
     hideMerchTicketOffers: 'merchTicketOffers',
     hideVideoInfo: 'videoInfo',
-    hideExplore: 'explore'
+    hideExplore: 'explore',
+    hideSearchResults: 'searchFilters',
+    disableAutoplay: 'autoplay',
+    disableAnnotations: 'annotations'
   };
 
   // Build CSS rules for enabled settings
@@ -47,105 +50,42 @@ function generateHideRules(settings: Settings): string {
 }
 
 /**
- * Generate JavaScript to disable features
- */
-function generateDisableScripts(settings: Settings): string {
-  const scripts: string[] = [];
-
-  // Disable autoplay
-  if (settings.disableAutoplay) {
-    scripts.push(`
-      (function() {
-        // Override autoplay attribute
-        Object.defineProperty(HTMLMediaElement.prototype, 'autoplay', {
-          set: function() {},
-          get: function() { return false; }
-        });
-
-        // Disable autoplay button
-        const observer = new MutationObserver(() => {
-          const autoplayButton = document.querySelector('[aria-label*="Autoplay"]');
-          if (autoplayButton) {
-            autoplayButton.click?.();
-          }
-        });
-
-        observer.observe(document.body, {
-          subtree: true,
-          attributes: true,
-          attributeFilter: ['autoplay']
-        });
-      })();
-    `);
-  }
-
-  // Disable annotations
-  if (settings.disableAnnotations) {
-    scripts.push(`
-      (function() {
-        // Hide interactive cards/annotations
-        const style = document.createElement('style');
-        style.innerHTML = \`
-          ytp-card-container { display: none !important; }
-          .ytp-card { display: none !important; }
-          .ytp-cards-button { display: none !important; }
-        \`;
-        document.head.appendChild(style);
-      })();
-    `);
-  }
-
-  return scripts.join('\n');
-}
-
-/**
- * Inject CSS styles into the page
+ * Inject CSS styles into the page.
+ * Re-uses the existing style tag when possible to avoid triggering
+ * the styleWatchdog MutationObserver unnecessarily.
  */
 export function injectStyles(settings: Settings): void {
-  // Remove existing style tag if present
+  const cssRules = generateHideRules(settings);
   const existingStyle = document.getElementById(STYLE_TAG_ID);
-  if (existingStyle) {
-    existingStyle.remove();
+
+  if (!cssRules) {
+    // No rules needed — remove tag if it exists
+    if (existingStyle) existingStyle.remove();
+    return;
   }
 
-  // Generate CSS rules
-  const cssRules = generateHideRules(settings);
-
-  if (cssRules) {
-    // Create and inject new style tag
+  if (existingStyle) {
+    // Update in-place — no remove/add cycle
+    if (existingStyle.textContent !== cssRules) {
+      existingStyle.textContent = cssRules;
+    }
+  } else {
+    // First injection — create the tag
     const style = document.createElement('style');
     style.id = STYLE_TAG_ID;
     style.type = 'text/css';
-    style.innerHTML = cssRules;
+    style.textContent = cssRules;
     document.head.appendChild(style);
   }
 }
 
 /**
- * Inject disable scripts into the page context
- * Scripts injected this way have access to the page's context
- */
-export function injectDisableScripts(settings: Settings): void {
-  const scripts = generateDisableScripts(settings);
-
-  if (scripts) {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = scripts;
-    document.head.appendChild(script);
-  }
-}
-
-/**
- * Apply all styles and scripts based on settings
+ * Apply all styles based on settings.
+ * Autoplay is handled separately via a DOM observer in content.ts
+ * because YouTube's player requires clicking the toggle, not CSS alone.
  */
 export function applyAllRules(settings: Settings): void {
-  // Inject CSS for element hiding
   injectStyles(settings);
-
-  // Inject scripts for feature disabling
-  injectDisableScripts(settings);
-
   console.debug('[D-Tox] Rules applied', settings);
 }
 
