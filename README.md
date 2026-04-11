@@ -28,6 +28,16 @@ YouTube's algorithm is designed to keep you scrolling. Home feed, Shorts, sideba
 
 **Cross-browser** — Works on Chrome, Brave, Edge, and Firefox.
 
+## Screenshots
+
+| Hide Home Feed | Hide Shorts |
+|----------------|-------------|
+| ![Hide Home Feed](assets/screenshots/hide_home_feed.png) | ![Hide Shorts](assets/screenshots/hide_shorts.png) |
+
+| Disable Sidebar | Hide Unwanted Comments |
+|-----------------|------------------------|
+| ![Disable Sidebar](assets/screenshots/disable_sidebar.png) | ![Hide Unwanted Comments](assets/screenshots/hide_unwanted_comments.png) |
+
 ## Install
 
 ### Quick install (no code needed)
