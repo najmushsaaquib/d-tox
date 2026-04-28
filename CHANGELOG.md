@@ -5,6 +5,17 @@ All notable changes to D-Tox will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-04-28
+
+### Added
+- **Privacy link in popup footer** — every popup now shows a Privacy link pointing to `https://d-tox.najmushsaaquib.com/privacy`
+- **homepage_url in manifest** — surfaces `https://d-tox.najmushsaaquib.com` on the Chrome Web Store listing and in `chrome://extensions`
+
+### Changed
+- Version bumped to `1.4.1`
+
+---
+
 ## [1.4.0] - 2026-04-28
 
 ### Fixed
