@@ -142,7 +142,7 @@ export default function Popup() {
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (tab?.id && tab.url?.includes('youtube.com')) {
-        chrome.tabs.sendMessage(tab.id, { type: 'dtox-settings-changed', settings: next });
+        chrome.tabs.sendMessage(tab.id, { type: 'dtox-settings-changed', settings: next }).catch(() => {});
       }
     } catch { /* tab may not have content script yet — storage listener is the fallback */ }
   };

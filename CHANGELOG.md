@@ -5,6 +5,21 @@ All notable changes to D-Tox will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-04-28
+
+### Fixed
+- **Sidebar layout misalignment** — text and metadata no longer bleed outside the video width when Sidebar Recommendations is enabled. Root cause was `max-width: none` removing YouTube's own constraint; replaced with `max-width: 1280px; width: 100%` so content stays centered and bounded to the player width (#7)
+- **Toggle performance lag** — removed `void document.body.offsetHeight` forced synchronous reflow that was called on every toggle. Updating a `<style>` tag does not need a manual reflow trigger, making toggles instant and jank-free (#7)
+- **Occasional "needs reload" after navigation** — added a second `apply()` call 600 ms after `yt-navigate-finish` to catch YouTube polymer elements that finish upgrading after the event fires. Eliminates most cases where a toggle appeared to do nothing until reload (#7)
+- **Shorts/Explore toggle needs two clicks** — `startMarkers()` was guarded with `if (!markerInterval)` causing it to keep a stale settings closure when re-toggled. Now always restarts the interval so the latest settings are captured (#7)
+- **Unhandled promise rejection in popup** — `chrome.tabs.sendMessage` was not awaited; added `.catch(() => {})` to silence the "Receiving end does not exist" rejection when the content script hasn't loaded yet
+
+### Changed
+- **Welcome page** — on first install, opens `https://d-tox.najmushsaaquib.com/welcome` instead of the bundled `welcome.html`
+- **Navigation fallback removed** — 1-second `setInterval` URL polling used as nav fallback is removed; `yt-navigate-finish` + the 600 ms delayed re-apply is sufficient and eliminates constant background timer load
+
+---
+
 ## [1.3.0] - 2026-03-31
 
 ### Added

@@ -76,10 +76,10 @@ function clearMarkers() {
 }
 
 function startMarkers(settings: Settings) {
+  // Always restart so the new settings closure replaces the old one
+  stopMarkers();
   markElements(settings);
-  if (!markerInterval) {
-    markerInterval = setInterval(() => markElements(settings), 2000);
-  }
+  markerInterval = setInterval(() => markElements(settings), 2000);
 }
 
 function stopMarkers() {
@@ -103,10 +103,6 @@ export default defineContentScript({
         applyAllRules(settings);
         startMarkers(settings);
 
-        // Force synchronous layout reflow so CSS changes (like sidebar
-        // centering or header removal) apply visually without page reload.
-        void document.body.offsetHeight;
-
         if (settings.disableAutoplay) {
           startAutoplayObserver();
         } else {
@@ -117,7 +113,6 @@ export default defineContentScript({
         stopAutoplayObserver();
         stopMarkers();
         clearMarkers();
-        void document.body.offsetHeight;
       }
     }
 
@@ -139,23 +134,15 @@ export default defineContentScript({
       }
     });
 
-    // Re-apply on YouTube SPA navigation using YouTube's own event
+    // Re-apply on YouTube SPA navigation using YouTube's own event.
+    // The second apply at 600 ms catches YouTube polymer elements that finish
+    // upgrading after yt-navigate-finish fires, eliminating the need to reload.
     document.addEventListener('yt-navigate-finish', () => {
       if (current?.extensionEnabled) {
         apply(current);
+        setTimeout(() => { if (current?.extensionEnabled) apply(current!); }, 600);
       }
     });
-
-    // Fallback: also detect URL changes for edge cases
-    let lastUrl = location.href;
-    const navCheck = setInterval(() => {
-      if (location.href !== lastUrl) {
-        lastUrl = location.href;
-        if (current?.extensionEnabled) {
-          setTimeout(() => apply(current!), 300);
-        }
-      }
-    }, 1000);
 
     // Style tag watchdog — re-inject only if YouTube actually removed it
     const styleWatchdog = new MutationObserver((mutations) => {

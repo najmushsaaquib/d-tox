@@ -6,7 +6,7 @@ export default defineConfig({
   outDir: 'dist',
   manifest: {
     name: 'D-Tox: YouTube Detox',
-    version: '1.3.0',
+    version: '1.4.0',
     description: 'Detox your YouTube. Hide distractions, disable autoplay, and reclaim your attention.',
     permissions: [
       'storage',
