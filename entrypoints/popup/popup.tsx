@@ -15,6 +15,7 @@ const FEATURE_FORM   = 'https://forms.gle/B1eb14KJGTRoiS179';
 const BUG_FORM       = 'https://forms.gle/dLTobfdskRPJ6poY6';
 const GITHUB_URL     = 'https://github.com/najmushsaaquib/d-tox';
 const GITHUB_PROFILE = 'https://github.com/najmushsaaquib';
+const PRIVACY_URL    = 'https://d-tox.najmushsaaquib.com/privacy';
 
 // ── Support Modal ─────────────────────────────────────────────────────────────
 function SupportModal({ onClose, showToast }: { onClose: () => void; showToast: (msg: string) => void }) {
@@ -388,6 +389,8 @@ export default function Popup() {
         <button className="footer-btn" onClick={() => setShowSupport(true)}>🤝 Support</button>
         <span className="footer-dot">·</span>
         <a href={FEATURE_FORM} target="_blank" rel="noopener noreferrer">💡 Request Feature</a>
+        <span className="footer-dot">·</span>
+        <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer">Privacy</a>
         <span className="footer-dot">·</span>
         <span className="footer-love">Made with ❤️ by <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" className="author-link">Najmush</a></span>
       </footer>
