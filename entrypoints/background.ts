@@ -25,7 +25,7 @@ export default defineBackground(() => {
 
       // Open welcome page on first install
       chrome.tabs.create({
-        url: chrome.runtime.getURL('welcome.html'),
+        url: 'https://d-tox.najmushsaaquib.com/welcome',
         active: true
       });
     } else if (details.reason === 'update') {

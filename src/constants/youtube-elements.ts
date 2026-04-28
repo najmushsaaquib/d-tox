@@ -206,9 +206,9 @@ export const HIDE_CSS_RULES: Record<string, string> = {
     #secondary { display: none !important; }
     #related { display: none !important; }
     #columns { justify-content: center !important; }
-    #primary { max-width: none !important; }
-    #primary-inner { max-width: none !important; }
-    ytd-watch-flexy[flexy][is-two-columns_] #primary { max-width: none !important; }
+    #primary.ytd-watch-flexy { max-width: 1280px !important; width: 100% !important; }
+    #primary-inner { max-width: 1280px !important; }
+    ytd-watch-flexy[flexy][is-two-columns_] #primary { max-width: 1280px !important; }
   `,
 
   shorts: `

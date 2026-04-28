@@ -96,8 +96,8 @@ d-tox/
 
 1. **Content script** runs on youtube.com pages
 2. Reads your toggle settings from Chrome Storage
-3. Injects CSS rules to hide selected elements
-4. Uses a MutationObserver to handle YouTube's dynamic content loading
+3. Injects a `<style>` tag with CSS rules to hide selected elements — changes apply instantly without page reload
+4. Listens to YouTube's native `yt-navigate-finish` SPA event to re-apply rules on every navigation
 5. Master toggle can pause all rules instantly
 
 ## Contributing
